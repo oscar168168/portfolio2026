@@ -1,7 +1,20 @@
-import React from "react";
+"use client";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 
 const Hero = () => {
+  const images = ["/images/hero.jpg", "/images/hero2.jpg", "/images/hero3.jpg"];
+
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [images.length]);
+
   return (
     <div>
       <div
@@ -32,16 +45,21 @@ const Hero = () => {
           <button className="w-full sm:w-fit">Let&#39;s Talk</button>
         </div>
 
-        {/* Image section */}
-        <div className="w-full lg:w-[50%] h-64 sm:h-80 bg-white md:h-96 lg:h-full relative overflow-hidden">
-          <Image
-            src="/images/hero.jpg"
-            className="w-full h-full object-cover"
-            alt="Hero background"
-            width={2000}
-            height={2000}
-            priority
-          />
+        {/* Image section with slideshow */}
+        <div className="w-full lg:w-[50%] h-64 sm:h-80 border border-white/10  md:h-96 lg:h-full relative overflow-hidden">
+          {images.map((src, index) => (
+            <Image
+              key={src}
+              src={src}
+              className={`w-full h-full object-cover absolute inset-0 transition-opacity duration-1000 ${
+                index === currentImageIndex ? "opacity-100" : "opacity-0"
+              }`}
+              alt={`Hero background ${index + 1}`}
+              width={2000}
+              height={2000}
+              priority={index === 0}
+            />
+          ))}
         </div>
       </div>
     </div>

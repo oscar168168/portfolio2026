@@ -44,10 +44,9 @@ h4 {
 }
 
 p {
-  font-size: 1rem;
-  font-weight: 200;
-  opacity: 0.8;
+  @apply md:text-base text-sm font-light tracking-wider text-white/70 leading-relaxed;
 }
+
 
 button {
   @apply h-12 px-8 bg-white/10 backdrop-blur md:text-base text-sm font-medium text-white rounded-full hover:bg-white/20 transition;

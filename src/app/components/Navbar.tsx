@@ -22,7 +22,7 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="h-14 sm:h-16 flex justify-between  z-50 items-center px-4 sm:px-6 md:px-12 lg:px-20 sticky top-0">
+      <nav className="h-14 sm:h-16 flex justify-between bg-white/1 border backdrop-blur border-white/10  z-50 items-center px-4 sm:px-6 md:px-12 lg:px-20 sticky top-0">
         {/* Logo */}
         <a href={menu[0].link} className="flex items-center gap-2">
           <h5 className="text-base sm:text-lg md:text-xl font-semibold text-white">
@@ -36,7 +36,7 @@ const Navbar = () => {
             <a
               key={item.name}
               href={item.link}
-              className="hover:underline underline-offset-8 decoration-2 decoration-white/30 transition-all text-sm lg:text-base"
+              className="hover:underline tracking-wider underline-offset-8 decoration-2 decoration-white/30 transition-all text-sm lg:text-base"
             >
               {item.name}
             </a>

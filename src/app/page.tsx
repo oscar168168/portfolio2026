@@ -67,7 +67,7 @@ export default function Home() {
   }, []);
 
   return (
-    <main>
+    <main className="md:space-y-8 space-y-4">
       <Hero />
       <About />
       <Project />
