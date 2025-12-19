@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
+  --background: #82181a;
   --foreground: #171717;
 }
 
@@ -19,8 +19,36 @@
   }
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  /* background-image: url('/images/bg.jpg');
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center; */
+  @apply bg-white dark:bg-black;
+}
+
+h1 {
+  @apply md:text-[8rem] text-[5rem] font-black md:leading-32 leading-20;
+}
+
+h4 {
+  font-size: 2rem;
+  font-weight: 200;
+
+}
+
+p {
+  font-size: 1rem;
+  font-weight: 200;
+  opacity: 0.8;
+}
+
+button {
+  @apply h-12 px-8 bg-white/10 backdrop-blur md:text-base text-sm font-medium text-white rounded-full hover:bg-white/20 transition;
 }
