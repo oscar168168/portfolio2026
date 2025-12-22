@@ -1,6 +1,8 @@
 "use client";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import Image from "next/image";
+import { BadgeCheck } from "lucide-react";
 
 const menu = [
   { name: "Home", link: "#home" },
@@ -11,6 +13,8 @@ const menu = [
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -20,12 +24,60 @@ const Navbar = () => {
     setIsMenuOpen(false);
   };
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      if (currentScrollY < 10) {
+        // Always show navbar at the top
+        setIsVisible(true);
+      } else if (currentScrollY > lastScrollY) {
+        // Scrolling down - hide navbar
+        setIsVisible(false);
+      } else {
+        // Scrolling up - show navbar
+        setIsVisible(true);
+      }
+
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [lastScrollY]);
+
   return (
     <>
-      <nav className="h-14 sm:h-16 flex justify-between bg-white/1 border backdrop-blur border-white/10  z-50 items-center px-4 sm:px-6 md:px-12 lg:px-20 sticky top-0">
-        {/* Logo */}
-        <a href={menu[0].link} className="flex items-center gap-2">
-          <h5 className="text-base sm:text-lg md:text-xl font-semibold text-white">
+      <nav
+        className={`h-14 sm:h-16 flex justify-between bg-white/1 border backdrop-blur border-white/10 z-50 items-center px-4 sm:px-6 md:px-12 lg:px-20 sticky top-0 transition-transform duration-300 ${
+          isVisible ? "translate-y-0" : "-translate-y-full"
+        }`}
+      >
+        {/* Logo with Avatar and Badge */}
+        <a
+          href={menu[0].link}
+          className="flex items-center gap-2 sm:gap-3 group"
+        >
+          {/* Avatar */}
+          <div className="relative">
+            <Image
+              src="/images/profile.jpg" // Replace with your avatar image path
+              alt="Rat Raksmey"
+              width={40}
+              height={40}
+              className="rounded-full object-cover border-2 border-white/20 group-hover:border-violet-400 transition-all duration-300 w-8 h-8 sm:w-10 sm:h-10"
+            />
+            {/* Verified Badge */}
+            <div className="absolute -bottom-0.5 -right-0.5 bg-violet-500 rounded-full p-0.5">
+              <BadgeCheck className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-white fill-violet-500" />
+            </div>
+          </div>
+
+          {/* Name */}
+          <h5 className="text-sm  md:text-base  text-white group-hover:text-violet-400 transition-colors duration-300">
             Rat Raksmey
           </h5>
         </a>

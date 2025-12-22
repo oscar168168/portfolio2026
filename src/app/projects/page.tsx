@@ -1,9 +1,12 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 
 const Project = () => {
   const [activeFilter, setActiveFilter] = useState("all");
+  const [isVisible, setIsVisible] = useState(false);
+  const [hasAnimated, setHasAnimated] = useState(false);
+  const projectRef = useRef<HTMLDivElement>(null);
 
   const projects = [
     {
@@ -61,61 +64,111 @@ const Project = () => {
       ? projects
       : projects.filter((project) => project.category === activeFilter);
 
+  // Intersection observer for scroll animation (one-time only)
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !hasAnimated) {
+          setIsVisible(true);
+          setHasAnimated(true);
+          observer.disconnect(); // Stop observing after first animation
+        }
+      },
+      {
+        threshold: 0.1,
+        rootMargin: "50px",
+      }
+    );
+
+    if (projectRef.current && !hasAnimated) {
+      observer.observe(projectRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [hasAnimated]);
+
   return (
     <div id="projects" className="min-h-screen w-full relative">
-      <div className="w-full max-w-[1500px] py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 relative font-sans mx-auto text-white">
+      <div
+        ref={projectRef}
+        className="w-full max-w-[1500px] py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 relative font-sans mx-auto text-white"
+      >
         {/* Background blur effects */}
         <div className="absolute -z-10 rounded-full blur-[140px] sm:blur-[180px] lg:blur-[240px] w-48 h-48 sm:w-64 sm:h-64 lg:w-[500px] lg:h-[500px] bg-pink-400/50 top-0 left-1/4" />
         <div className="absolute -z-10 rounded-full blur-[100px] sm:blur-[140px] lg:blur-[200px] w-40 h-40 sm:w-52 sm:h-52 lg:w-[400px] lg:h-[400px] bg-violet-400/60 top-1/3 right-0" />
 
-        {/* Header */}
+        {/* Header with animation */}
         <div className="text-center space-y-3 sm:space-y-4 mb-12 sm:mb-16">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold">
-            My <span className="text-violet-400">Projects</span>
+          <h2
+            className={`text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-extrabold transition-all duration-700 ease-out ${
+              isVisible
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-8"
+            }`}
+            style={{ transitionDelay: "100ms" }}
+          >
+            My Projects
           </h2>
-          <p className="text-sm sm:text-base lg:text-lg text-white/70 max-w-2xl mx-auto">
+          <p
+            className={`text-sm sm:text-base lg:text-lg text-white/70 max-w-2xl mx-auto transition-all duration-700 ease-out ${
+              isVisible
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-8"
+            }`}
+            style={{ transitionDelay: "200ms" }}
+          >
             Explore my latest work in UX/UI and graphic design. Each project
             represents a unique challenge and creative solution.
           </p>
         </div>
 
-        {/* Filter buttons */}
+        {/* Filter buttons with staggered animation */}
         <div className="flex flex-wrap justify-center gap-3 sm:gap-4 mb-8 sm:mb-12">
-          {filters.map((filter) => (
+          {filters.map((filter, index) => (
             <button
               key={filter.id}
               onClick={() => setActiveFilter(filter.id)}
-              className={`px-4 sm:px-6 py-2 sm:py-3 rounded-full text-sm sm:text-base transition-all duration-300 ${
+              className={`px-4 sm:px-6 py-2 sm:py-3 rounded-full text-sm sm:text-base transition-all duration-700 ease-out ${
                 activeFilter === filter.id
                   ? "bg-violet-400 text-white"
                   : "bg-white/10 text-white/70 hover:bg-white/20"
+              } ${
+                isVisible
+                  ? "opacity-100 translate-y-0 scale-100"
+                  : "opacity-0 translate-y-8 scale-95"
               }`}
+              style={{ transitionDelay: `${300 + index * 100}ms` }}
             >
               {filter.label}
             </button>
           ))}
         </div>
 
-        {/* Projects grid */}
+        {/* Projects grid with staggered animation */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-          {filteredProjects.map((project) => (
+          {filteredProjects.map((project, index) => (
             <div
               key={project.id}
-              className="group relative overflow-hidden rounded-lg bg-white/5 backdrop-blur-sm hover:bg-white/10 transition-all duration-300 cursor-pointer"
+              className={`group relative overflow-hidden rounded-lg bg-white/5 backdrop-blur-sm hover:bg-white/10 transition-all duration-700 ease-out cursor-pointer ${
+                isVisible
+                  ? "opacity-100 translate-y-0 scale-100"
+                  : "opacity-0 translate-y-12 scale-95"
+              }`}
+              style={{ transitionDelay: `${600 + index * 100}ms` }}
             >
-              <div className="relative h-48 sm:h-56 lg:h-64 overflow-hidden">
+              <div className="relative w-full aspect-3/2 overflow-hidden">
                 <Image
                   src={project.image}
                   alt={project.title}
                   width={800}
                   height={600}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  className="w-full h-full object-cover transition-transform duration-500"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </div>
 
               <div className="p-4 sm:p-6">
-                <h3 className="text-lg sm:text-xl font-bold mb-2 group-hover:text-violet-400 transition-colors duration-300">
+                <h3 className="text-lg sm:text-xl mb-2 group-hover:text-violet-400 transition-colors duration-300">
                   {project.title}
                 </h3>
                 <p className="text-xs sm:text-sm text-white/60">
@@ -123,9 +176,9 @@ const Project = () => {
                 </p>
               </div>
 
-              {/* Hover overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-violet-600/90 via-pink-600/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                <span className="text-white font-semibold text-sm sm:text-base px-4 sm:px-6 py-2 sm:py-3 border-2 border-white rounded-full transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+              {/* Hover overlay - More subtle */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                <span className="text-white font-semibold text-sm sm:text-base px-4 sm:px-6 py-2 sm:py-3 border-2 border-white/80 rounded-full transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
                   View Project
                 </span>
               </div>
@@ -133,9 +186,18 @@ const Project = () => {
           ))}
         </div>
 
-        {/* View more button */}
+        {/* View more button with animation */}
         <div className="text-center mt-12 sm:mt-16">
-          <button className="w-full sm:w-auto">View All Projects</button>
+          <button
+            className={`w-full sm:w-auto transition-all duration-700 ease-out ${
+              isVisible
+                ? "opacity-100 translate-y-0 scale-100"
+                : "opacity-0 translate-y-8 scale-95"
+            }`}
+            style={{ transitionDelay: "1200ms" }}
+          >
+            View All Projects
+          </button>
         </div>
       </div>
     </div>

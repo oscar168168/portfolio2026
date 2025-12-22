@@ -67,7 +67,32 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="md:space-y-8 space-y-4">
+    <main className="relative md:space-y-8 space-y-4">
+      {/* Grid Background - Fixed */}
+      <div className="fixed inset-0 -z-20 h-full w-full">
+        {/* Base gradient background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-black to-gray-900"></div>
+
+        {/* Grid pattern - Vertical lines only */}
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `
+              linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px)
+            `,
+            backgroundSize: "360px 100%",
+          }}
+        ></div>
+
+        {/* Gradient overlay to fade grid at edges */}
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/50"></div>
+
+        {/* Additional accent gradients */}
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-violet-500/10 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-pink-500/10 rounded-full blur-3xl"></div>
+      </div>
+
+      {/* Content */}
       <Hero />
       <About />
       <Project />
