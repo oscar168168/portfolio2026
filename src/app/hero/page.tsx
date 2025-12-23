@@ -3,7 +3,13 @@ import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 
 const Hero = () => {
-  const images = ["/images/hero.jpg", "/images/hero2.jpg", "/images/hero3.jpg"];
+  const images = [
+    "/images/hero.jpg",
+    "/images/hero2.jpg",
+    "/images/hero3.jpg",
+    "/images/hero4.jpg",
+    "/images/hero5.jpg",
+  ];
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
