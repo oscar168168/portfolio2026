@@ -42,7 +42,7 @@ const About = () => {
 
         {/* Image section with animation */}
         <div
-          className={`w-full lg:w-[45%] h-64 sm:h-80 md:h-96 lg:h-[600px] relative overflow-hidden transition-all duration-800 ease-out ${
+          className={`w-full lg:w-[45%] h-64 sm:h-80 md:h-96 lg:h-[600px] relative overflow-hidden transition-all bg-white/10 backdrop-blur duration-800 ease-out ${
             isVisible
               ? "opacity-100 -translate-x-0 scale-100"
               : "opacity-0 -translate-x-12 scale-95"
@@ -50,7 +50,7 @@ const About = () => {
           style={{ transitionDelay: "100ms" }}
         >
           <Image
-            src="/images/bg.jpg"
+            src="/images/about.png"
             className="w-full h-full object-cover"
             alt="About me"
             width={2000}
