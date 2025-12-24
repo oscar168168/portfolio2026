@@ -98,10 +98,18 @@ const Navbar = () => {
         {/* CTA Button - Desktop */}
         <button className="hidden md:block">Let&#39;s Talk</button>
 
-        {/* Mobile Menu Button */}
-        <button
+        {/* Mobile Menu Icon */}
+        <div
           onClick={toggleMenu}
-          className="md:hidden flex flex-col gap-1 !size-5 !bg-transparent justify-end items-end z-50"
+          className="md:hidden flex flex-col gap-1 !size-5 justify-center items-end z-50 cursor-pointer"
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              toggleMenu();
+            }
+          }}
           aria-label="Toggle menu"
         >
           <span
@@ -116,10 +124,10 @@ const Navbar = () => {
           ></span>
           <span
             className={`w-4 h-0.5 bg-white transition-all duration-300 ${
-              isMenuOpen ? "-rotate-45 w-5 -translate-y-1" : ""
+              isMenuOpen ? "-rotate-45 w-5  -translate-y-1" : ""
             }`}
           ></span>
-        </button>
+        </div>
       </nav>
 
       {/* Mobile Menu Overlay */}

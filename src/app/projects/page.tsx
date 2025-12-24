@@ -149,7 +149,7 @@ const Project = () => {
           {filteredProjects.map((project, index) => (
             <div
               key={project.id}
-              className={`group relative overflow-hidden rounded-lg bg-white/5 backdrop-blur-sm hover:bg-white/10 transition-all duration-700 ease-out cursor-pointer ${
+              className={`group relative overflow-hidden rounded-b-lg bg-white/5 backdrop-blur-sm hover:bg-white/10 transition-all duration-700 ease-out cursor-pointer ${
                 isVisible
                   ? "opacity-100 translate-y-0 scale-100"
                   : "opacity-0 translate-y-12 scale-95"
